@@ -4,8 +4,8 @@
     <!-- Localization-only mode -->
     <arg name="localization"            default="false"/>
 
-    <arg     if="$(arg localization)" name="args" default=""/>
-    <arg unless="$(arg localization)" name="args" default="--delete_db_on_start"/>
+    <arg     if="$(arg localization)" name="args" default=""/> 
+    <arg unless="$(arg localization)" name="args" default="--delete_db_on_start"/> 
 
     <!-- RGB-D related topics -->
     <arg name="rgb_topic"               default="zed/zed_node/rgb/image_rect_color" />
@@ -26,7 +26,7 @@
     </node>
     -->
 
-    <!-- RTABmapviz -->
+    <!-- RTABmapviz TODO disable for testing -->
     <node name="rtabmapviz" pkg="rtabmap_ros" type="rtabmapviz" output="screen" args="" launch-prefix="">    
         <remap from="rgb/image"         to="$(arg rgb_topic)"/>
         <remap from="depth/image"       to="$(arg depth_topic)"/>
@@ -35,12 +35,21 @@
         <remap from="grid_map"          to="map" />
         <remap from="odom"              to="$(arg odom_topic)"/>
     </node> 
+    <!--
+    scan (sensor_msgs/LaserScan)
+    Laser scan stream. Required if parameter subscribe_scan is true. 
+    ~subscribe_scan (bool, default: "false")
 
+        Subscribe to laser scan 
+base_link → <the frame attached to sensors of incoming data>
+
+    usually a fixed value, broadcast periodically by a robot_state_publisher, or a tf static_transform_publisher. 
+-->
 
     <!-- RTABmap -->
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)" launch-prefix="">
         <rosparam command="load" file="$(find zed_rtabmap_example)/params/rtabmap.yaml" />
-    
+        <!--remap from="scan"              to="scan"/-->
         <remap from="rgb/image"         to="$(arg rgb_topic)"/>
         <remap from="depth/image"       to="$(arg depth_topic)"/>
         <remap from="rgb/camera_info"   to="$(arg camera_info_topic)"/>
@@ -52,11 +61,10 @@
         <param     if="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="false"/>
         <param unless="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="true"/>
         <param name="Mem/InitWMWithAllNodes" type="string" value="$(arg localization)"/>
+        <!-- Ken yu added for ZED fuse with 2d lidar-->
+        <param name="subscribe_scan" value="true"/>
     </node>
-
-    
-
-
-
+    <!-- Ken yu invoke 2d lidar and static tf-->
+    <include file="$(find zed_rtabmap_example)/launch/include/2d_laser.launch.xml"/>
 </launch>
 

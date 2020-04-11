@@ -18,6 +18,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
 <launch>
+    <arg name="visualizaiton"                   default="false"/>
+    <arg name="use_hokuyo"                      default="false"/>
     <arg name="zed_namespace"		    	default="zed" />
     <arg name="localization"                    default="false"/>
     <arg name="svo_file"                        default="" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->
@@ -43,9 +45,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <arg name="camera_info_topic"       default="zed_node/rgb/camera_info" />
             <arg name="depth_camera_info_topic" default="zed_node/depth/camera_info" />
             <arg name="localization" default="$(arg localization)" />
-        </include>   
-
-        <!-- Rviz TODO disable for testing -->
-        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find zed_rtabmap_example)/rviz/zed-rtabmap.rviz" output="screen" />
+            <arg name="visualizaiton" default="$(arg visualizaiton)" />
+            <arg name="use_hokuyo" default="$(arg use_hokuyo)" />
+        </include>
     </group>
 </launch>

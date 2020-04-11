@@ -1,0 +1,16 @@
+<launch>
+    <arg name="rgb_topic"               default="zed/zed_node/rgb/image_rect_color" />
+    <arg name="depth_topic"             default="zed/zed_node/depth/depth_registered" />
+    <arg name="camera_info_topic"       default="zed/zed_node/rgb/camera_info" />
+    <arg name="odom_topic"              default="zed/zed_node/odom" /> 
+
+    <node name="rtabmapviz" pkg="rtabmap_ros" type="rtabmapviz" output="screen" args="" launch-prefix="">
+        <remap from="rgb/image"         to="$(arg rgb_topic)"/>
+        <remap from="depth/image"       to="$(arg depth_topic)"/>
+        <remap from="rgb/camera_info"   to="$(arg camera_info_topic)"/>
+        <remap from="grid_map"          to="map" />
+        <remap from="odom"              to="$(arg odom_topic)"/>
+    </node>
+    <!-- Rviz -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find zed_rtabmap_example)/rviz/zed-rtabmap.rviz" output="screen" />
+</launch>

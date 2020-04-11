@@ -1,6 +1,9 @@
 <!-- RTAB-Map launcher -->
 
 <launch>
+    <arg name="visualizaiton"                   default="false"/>
+    <arg name="use_hokuyo"                      default="false"/>
+
     <!-- Localization-only mode -->
     <arg name="localization"            default="false"/>
 
@@ -26,15 +29,15 @@
     </node>
     -->
 
-    <!-- RTABmapviz TODO disable for testing -->
-    <node name="rtabmapviz" pkg="rtabmap_ros" type="rtabmapviz" output="screen" args="" launch-prefix="">    
-        <remap from="rgb/image"         to="$(arg rgb_topic)"/>
-        <remap from="depth/image"       to="$(arg depth_topic)"/>
-        <remap from="rgb/camera_info"   to="$(arg camera_info_topic)"/>
-
-        <remap from="grid_map"          to="map" />
-        <remap from="odom"              to="$(arg odom_topic)"/>
-    </node> 
+    <!-- RTABmapviz-->
+    <group if="$(arg visualizaiton)">
+        <include file="$(find zed_rtabmap_example)/launch/include/rtabmap_viz.launch.xml">
+            <arg name="rgb_topic"         default="$(arg rgb_topic)"/>
+            <arg name="depth_topic"       default="$(arg depth_topic)"/>
+            <arg name="camera_info_topic"   default="$(arg camera_info_topic)"/>
+            <arg name="odom_topic"              default="$(arg odom_topic)"/>
+        </include>
+    </group>
     <!--
     scan (sensor_msgs/LaserScan)
     Laser scan stream. Required if parameter subscribe_scan is true. 
@@ -49,7 +52,7 @@ base_link → <the frame attached to sensors of incoming data>
     <!-- RTABmap -->
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)" launch-prefix="">
         <rosparam command="load" file="$(find zed_rtabmap_example)/params/rtabmap.yaml" />
-        <!--remap from="scan"              to="scan"/-->
+        
         <remap from="rgb/image"         to="$(arg rgb_topic)"/>
         <remap from="depth/image"       to="$(arg depth_topic)"/>
         <remap from="rgb/camera_info"   to="$(arg camera_info_topic)"/>
@@ -61,10 +64,15 @@ base_link → <the frame attached to sensors of incoming data>
         <param     if="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="false"/>
         <param unless="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="true"/>
         <param name="Mem/InitWMWithAllNodes" type="string" value="$(arg localization)"/>
+        
         <!-- Ken yu added for ZED fuse with 2d lidar-->
-        <param name="subscribe_scan" value="true"/>
+        <param name="subscribe_scan" value="true" if="$(arg use_hokuyo)"/>
+        <!--remap from="scan"              to="scan"/-->
     </node>
+
     <!-- Ken yu invoke 2d lidar and static tf-->
-    <include file="$(find zed_rtabmap_example)/launch/include/2d_laser.launch.xml"/>
+    <group if="$(arg use_hokuyo)">
+        <include file="$(find zed_rtabmap_example)/launch/include/2d_laser.launch.xml"/>
+    </group>
 </launch>
 

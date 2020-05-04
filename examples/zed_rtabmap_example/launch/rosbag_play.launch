@@ -1,0 +1,10 @@
+<launch>
+    <arg name="file_name"                   default="test_in_lab"/>
+    <node pkg="rosbag" type="play" name="player" output="screen" args="--clock $(find zed_rtabmap_example)/rosbag/$(arg file_name).bag">
+        <remap from="/velodyne_points" to="/zed/scan_cloud" />
+        <!--remap from="/zed_node/depth/depth_registered" to="/zed/zed_node/depth/depth_registered" /-->
+        <!--remap from="/zed_node/rgb/camera_info" to="/zed/zed_node/rgb/camera_info" /-->
+        <!--remap from="/zed_node/rgb/image_rect_color" to="/zed/zed_node/rgb/image_rect_color" /-->
+    </node>
+    
+</launch>

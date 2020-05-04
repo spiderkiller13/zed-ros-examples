@@ -43,6 +43,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <group ns="$(arg camera_name_1)">
         <include file="$(find zed_multicamera_example)/launch/zed_camera_mod.launch">
+            <arg name="svo_file"            value="$(find zed_rtabmap_example)/rosbag/multi_zed_two.svo" />
             <arg name="camera_name"         value="$(arg camera_name_1)" />
             <arg name="node_name"           value="$(arg node_name_1)" />
             <arg name="camera_model"        value="$(arg camera_model_1)" />
@@ -54,6 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
     <group ns="$(arg camera_name_2)">
         <include file="$(find zed_multicamera_example)/launch/zed_camera_mod.launch">
+            <arg name="svo_file"            value="$(find zed_rtabmap_example)/rosbag/multi_zed_one.svo" />
             <arg name="camera_name"         value="$(arg camera_name_2)" />
             <arg name="node_name"           value="$(arg node_name_2)" />
             <arg name="camera_model"        value="$(arg camera_model_2)" />
@@ -71,5 +73,5 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </group>
 
 <!-- Launch rivz display -->
-    <!--node name="rviz" pkg="rviz" type="rviz" args="-d $(find zed_multicamera_example)/rviz/multi_cam.rviz" output="screen" /-->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find zed_multicamera_example)/rviz/multi_cam.rviz" output="screen" />
 </launch>

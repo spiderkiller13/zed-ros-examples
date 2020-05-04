@@ -1,17 +1,4 @@
 <launch>
     <node name="pcd_to_pointcloud" pkg="pcl_ros" type="pcd_to_pointcloud" args="/home/lucky/solab_ws/src/zed-ros-examples/examples/zed_rtabmap_example/launch/rtabmap.pcd" />
     <node pkg="tf" type="static_transform_publisher" name="tf_tmp" args="0 0 0 0 0 0 -1 /map /base_link 100 "/>
-
-    <!--node pkg="nodelet" type="nodelet" name="voxel_grid" args="manager" output="screen">
-        <remap from="~input" to="/cloud_pcd" />
-        <remap from="~output" to="/cloud_pcd_filted" />
-        <rosparam>
-            filter_field_name: z
-            filter_limit_min: 0.01
-            filter_limit_max: 10
-            filter_limit_negative: False
-            leaf_size: 0.05
-        </rosparam>
-    </node-->
-    <!--node pkg='rviz' name="rviz" type="rviz"/-->
 </launch>

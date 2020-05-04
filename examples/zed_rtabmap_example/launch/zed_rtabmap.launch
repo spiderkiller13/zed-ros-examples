@@ -20,22 +20,69 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <launch>
     <arg name="visualizaiton"                   default="false"/>
     <arg name="use_hokuyo"                      default="false"/>
+    <arg name="use_velodyne"                      default="false"/>
+    <arg name="bag_file"                      default="false"/>
     <arg name="zed_namespace"		    	default="zed" />
     <arg name="localization"                    default="false"/>
-    <arg name="svo_file"                        default="" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->
+    <arg name="file_name"                        default="test_in_lab"/>
+    <arg name="svo_file"                        default="$(find zed_rtabmap_example)/rosbag/$(arg file_name).svo" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->
 
     <arg name="zed_node_name"                   default="zed_node" />
-    <arg name="camera_model"                    default="zed2" /> <!-- 'zed' or 'zedm' or 'zed2' -->
+    <arg name="camera_model"                    default="zed" /> <!-- 'zed' or 'zedm' or 'zed2' -->
     <arg name="publish_urdf"                    default="true" />
-    <!--node name="pcd_to_pointcloud" pkg="pcl_ros" type="pcd_to_pointcloud" args="/home/lucky/solab_ws/src/zed-ros-examples/examples/zed_rtabmap_example/launch/rtabmap.pcd" /-->
+    
+    <!--For zed description -->
+    <!-- Base frame -->
+    <arg name="camera_name"           default="zed" />
+    <arg name="base_frame"            default="base_link" />
+    <!-- Position respect to base frame (i.e. "base_link) -->
+    <arg name="cam_pos_x"             default="0.0" />
+    <arg name="cam_pos_y"             default="0.0" />
+    <arg name="cam_pos_z"             default="0.0" />
+
+    <!-- Orientation respect to base frame (i.e. "base_link) -->
+    <arg name="cam_roll"              default="0.0" />
+    <arg name="cam_pitch"             default="0.0" />
+    <arg name="cam_yaw"               default="0.0" />
+
+    
     <group ns="$(arg zed_namespace)">
         <!-- ZED Wrapper Node-->
-        <include file="$(find zed_wrapper)/launch/zed_camera.launch">
-            <arg name="svo_file"            value="$(arg svo_file)" />
-            <arg name="node_name"           value="$(arg zed_node_name)" />
-            <arg name="camera_model"        value="$(arg camera_model)" />
-            <arg name="publish_urdf"        value="$(arg publish_urdf)" />
-        </include>
+        <!--group if="$(arg bag_file)">
+            <param name="zed_description"
+            command="$(find xacro)/xacro '$(find zed_wrapper)/urdf/zed_descr.urdf.xacro'
+                     camera_name:=$(arg camera_name)
+                     camera_model:=$(arg camera_model)
+                     base_frame:=$(arg base_frame)
+                     cam_pos_x:=$(arg cam_pos_x)
+                     cam_pos_y:=$(arg cam_pos_y)
+                     cam_pos_z:=$(arg cam_pos_z)
+                     cam_roll:=$(arg cam_roll)
+                     cam_pitch:=$(arg cam_pitch)
+                     cam_yaw:=$(arg cam_yaw)"
+            />
+            <node name="zed_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen" required="true">
+                <remap from="robot_description" to="zed_description" />
+            </node>
+            <include file="$(find zed_rtabmap_example)/launch/rosbag_play.launch"/>
+        </group-->
+        <group if="$(arg bag_file)">
+            <include file="$(find zed_wrapper)/launch/zed_camera.launch">
+                <arg name="svo_file"            value="$(arg svo_file)" />
+                <arg name="node_name"           value="$(arg zed_node_name)" />
+                <arg name="camera_model"        value="$(arg camera_model)" />
+                <arg name="publish_urdf"        value="$(arg publish_urdf)" />
+            </include>
+            <include file="$(find zed_rtabmap_example)/launch/rosbag_play.launch"/>
+        </group>
+        <group unless="$(arg bag_file)">
+            <include file="$(find zed_wrapper)/launch/zed_camera.launch">
+                <arg name="svo_file"            value="" />
+                <arg name="node_name"           value="$(arg zed_node_name)" />
+                <arg name="camera_model"        value="$(arg camera_model)" />
+                <arg name="publish_urdf"        value="$(arg publish_urdf)" />
+            </include>
+        </group>
     <!-- RTAB-Map -->
         <arg name="custom_rtabmap_launch_file" default="$(find zed_rtabmap_example)/launch/include/sl_rtabmap.launch.xml"/>
         <include file="$(arg custom_rtabmap_launch_file)">
@@ -47,6 +94,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <arg name="localization" default="$(arg localization)" />
             <arg name="visualizaiton" default="$(arg visualizaiton)" />
             <arg name="use_hokuyo" default="$(arg use_hokuyo)" />
+            <arg name="use_velodyne" default="$(arg use_velodyne)"/>
         </include>
     </group>
 </launch>

@@ -1,0 +1,25 @@
+<launch>
+    <arg name="file_name"                   default="test_in_lab"/>
+
+    <!--node pkg="rosbag" type="record" name="record" output="screen" args="/velodyne_points 
+                                                                        /tf
+                                                                        /zed_node/rgb/camera_info
+                                                                        /zed_node/rgb/image_rect_color
+                                                                        /zed_node/depth/depth_registered
+                                                                        -O $(find zed_rtabmap_example)/rosbag/$(arg file_name).bag"/-->
+    <node pkg="rosbag" type="record" name="record" output="screen" args="/velodyne_points -O $(find zed_rtabmap_example)/rosbag/$(arg file_name).bag"/>
+    <!-- Record Velodyne VLP-16-->
+    <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch">
+        <arg name="calibration"         default="/home/lucky/Desktop/3d_lidar/VLP-16.yaml"/>
+    </include>
+    <!-- Record ZED camera-->
+    <include file="$(find zed_wrapper)/launch/zed_camera.launch">
+        <arg name="publish_map_tf"            value="false" />
+        <arg name="svo_file"            value="" />
+        <arg name="node_name"           value="zed_node" />
+        <arg name="camera_model"        value="zed" />
+        <arg name="publish_urdf"        value="true" />
+    </include>
+    <!-- Recor SVO file-->
+    <node pkg="rosservice" type="rosservice" name="svo_record_service" args="call --wait /zed_node/start_svo_recording $(find zed_rtabmap_example)/rosbag/$(arg file_name).svo" />
+</launch>

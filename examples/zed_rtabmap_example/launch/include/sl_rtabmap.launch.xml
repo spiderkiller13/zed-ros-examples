@@ -3,7 +3,8 @@
 <launch>
     <arg name="visualizaiton"                   default="false"/>
     <arg name="use_hokuyo"                      default="false"/>
-
+    <arg name="use_velodyne"                      default="false"/>
+    
     <!-- Localization-only mode -->
     <arg name="localization"            default="false"/>
 
@@ -67,6 +68,7 @@ base_link → <the frame attached to sensors of incoming data>
         
         <!-- Ken yu added for ZED fuse with 2d lidar-->
         <param name="subscribe_scan" value="true" if="$(arg use_hokuyo)"/>
+        <param name="subscribe_scan_cloud" value="true" if="$(arg use_velodyne)"/>
         <!--remap from="scan"              to="scan"/-->
     </node>
 

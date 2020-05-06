@@ -24,7 +24,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="bag_file"                      default="false"/>
     <arg name="zed_namespace"		    	default="zed" />
     <arg name="localization"                    default="false"/>
-    <arg name="file_name"                        default="test_in_lab"/>
+    <arg name="file_name"                        default="multi_zed_two"/>
     <arg name="svo_file"                        default="$(find zed_rtabmap_example)/rosbag/$(arg file_name).svo" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->
 
     <arg name="zed_node_name"                   default="zed_node" />
@@ -67,16 +67,19 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <include file="$(find zed_rtabmap_example)/launch/rosbag_play.launch"/>
         </group-->
         <group if="$(arg bag_file)">
-            <include file="$(find zed_wrapper)/launch/zed_camera.launch">
+            <!--include file="$(find zed_wrapper)/launch/zed_camera.launch"-->
+            <include file="$(find zed_wrapper)/launch/include/zed_camera.launch.xml">
                 <arg name="svo_file"            value="$(arg svo_file)" />
                 <arg name="node_name"           value="$(arg zed_node_name)" />
                 <arg name="camera_model"        value="$(arg camera_model)" />
                 <arg name="publish_urdf"        value="$(arg publish_urdf)" />
             </include>
-            <include file="$(find zed_rtabmap_example)/launch/rosbag_play.launch"/>
+            <!--Play 3D lidar rosbag -->
+            <!--include file="$(find zed_rtabmap_example)/launch/rosbag_play.launch"/-->
         </group>
         <group unless="$(arg bag_file)">
-            <include file="$(find zed_wrapper)/launch/zed_camera.launch">
+            <!--include file="$(find zed_wrapper)/launch/zed_camera.launch"-->
+            <include file="$(find zed_wrapper)/launch/zed2.launch">
                 <arg name="svo_file"            value="" />
                 <arg name="node_name"           value="$(arg zed_node_name)" />
                 <arg name="camera_model"        value="$(arg camera_model)" />

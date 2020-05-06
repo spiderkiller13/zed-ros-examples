@@ -61,14 +61,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <arg name="stream"                          value="$(arg stream)" />
             <arg name="node_name"                      value="$(arg zed_nodelet_name)" />
             <arg name="camera_model"                    value="$(arg camera_model)" />
-            <arg name="base_frame"                      value="$(arg base_frame)" />
             <arg name="publish_urdf"                    value="$(arg publish_urdf)" />
-            <arg name="cam_pos_x"                       value="$(arg cam_pos_x)" />
+            <!-- Ignore args to avoid ERROR msg comes from ros_wrapper-->
+            <!--arg name="base_frame"                      value="$(arg base_frame)" /-->
+            <!--arg name="cam_pos_x"                       value="$(arg cam_pos_x)" />
             <arg name="cam_pos_y"                       value="$(arg cam_pos_y)" />
             <arg name="cam_pos_z"                       value="$(arg cam_pos_z)" />
             <arg name="cam_roll"                        value="$(arg cam_roll)" />
             <arg name="cam_pitch"                       value="$(arg cam_pitch)" />
-            <arg name="cam_yaw"                         value="$(arg cam_yaw)" />
+            <arg name="cam_yaw"                         value="$(arg cam_yaw)" /-->
         </include>
 
         <!-- Start zed_nodelets/RgbdSensorsSyncNodelet -->

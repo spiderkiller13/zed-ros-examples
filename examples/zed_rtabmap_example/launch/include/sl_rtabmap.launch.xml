@@ -39,16 +39,6 @@
             <arg name="odom_topic"              default="$(arg odom_topic)"/>
         </include>
     </group>
-    <!--
-    scan (sensor_msgs/LaserScan)
-    Laser scan stream. Required if parameter subscribe_scan is true. 
-    ~subscribe_scan (bool, default: "false")
-
-        Subscribe to laser scan 
-base_link → <the frame attached to sensors of incoming data>
-
-    usually a fixed value, broadcast periodically by a robot_state_publisher, or a tf static_transform_publisher. 
--->
 
     <!-- RTABmap -->
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)" launch-prefix="">

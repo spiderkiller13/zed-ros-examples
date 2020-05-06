@@ -28,7 +28,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="svo_file"                        default="$(find zed_rtabmap_example)/rosbag/$(arg file_name).svo" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->
 
     <arg name="zed_node_name"                   default="zed_node" />
-    <arg name="camera_model"                    default="zed" /> <!-- 'zed' or 'zedm' or 'zed2' -->
+    <arg name="camera_model"                    default="zed2" /> <!-- 'zed' or 'zedm' or 'zed2' -->
     <arg name="publish_urdf"                    default="true" />
     
     <!--For zed description -->

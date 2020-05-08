@@ -18,12 +18,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
 <launch>
-    <arg name="visualizaiton"                   default="false"/>
+    <arg name="viz"                   default="false"/>
     <arg name="use_hokuyo"                      default="false"/>
     <arg name="use_velodyne"                      default="false"/>
     <arg name="bag_file"                      default="false"/>
     <arg name="zed_namespace"		    	default="zed" />
     <arg name="localization"                    default="false"/>
+    
     <arg name="file_name"                        default="multi_zed_two"/>
     <arg name="svo_file"                        default="$(find zed_rtabmap_example)/rosbag/$(arg file_name).svo" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->
 
@@ -78,24 +79,25 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <!--include file="$(find zed_rtabmap_example)/launch/rosbag_play.launch"/-->
         </group>
         <group unless="$(arg bag_file)">
-            <!--include file="$(find zed_wrapper)/launch/zed_camera.launch"-->
-            <include file="$(find zed_wrapper)/launch/zed2.launch">
+            <include file="$(find zed_wrapper)/launch/$(arg camera_model).launch">
                 <arg name="svo_file"            value="" />
                 <arg name="node_name"           value="$(arg zed_node_name)" />
                 <arg name="camera_model"        value="$(arg camera_model)" />
                 <arg name="publish_urdf"        value="$(arg publish_urdf)" />
+                <!--Localization need no map->odom from zed itself -->
+                <arg if="$(arg localization)" name="publish_map_tf" value="false"/> 
             </include>
         </group>
     <!-- RTAB-Map -->
         <arg name="custom_rtabmap_launch_file" default="$(find zed_rtabmap_example)/launch/include/sl_rtabmap.launch.xml"/>
         <include file="$(arg custom_rtabmap_launch_file)">
-            <arg name="odom_topic"              default="zed_node/odom" />
-            <arg name="rgb_topic"               default="zed_node/rgb/image_rect_color" />
-            <arg name="depth_topic"             default="zed_node/depth/depth_registered" />
-            <arg name="camera_info_topic"       default="zed_node/rgb/camera_info" />
-            <arg name="depth_camera_info_topic" default="zed_node/depth/camera_info" />
+            <arg name="odom_topic"              default="zed2/zed_node/odom" />
+            <arg name="rgb_topic"               default="zed2/zed_node/rgb/image_rect_color" />
+            <arg name="depth_topic"             default="zed2/zed_node/depth/depth_registered" />
+            <arg name="camera_info_topic"       default="zed2/zed_node/rgb/camera_info" />
+            <arg name="depth_camera_info_topic" default="zed2/zed_node/depth/camera_info" />
             <arg name="localization" default="$(arg localization)" />
-            <arg name="visualizaiton" default="$(arg visualizaiton)" />
+            <arg name="viz" default="$(arg viz)" />
             <arg name="use_hokuyo" default="$(arg use_hokuyo)" />
             <arg name="use_velodyne" default="$(arg use_velodyne)"/>
         </include>

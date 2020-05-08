@@ -1,7 +1,7 @@
 <!-- RTAB-Map launcher -->
 
 <launch>
-    <arg name="visualizaiton"                   default="false"/>
+    <arg name="viz"                   default="false"/>
     <arg name="use_hokuyo"                      default="false"/>
     <arg name="use_velodyne"                      default="false"/>
     
@@ -31,7 +31,7 @@
     -->
 
     <!-- RTABmapviz-->
-    <group if="$(arg visualizaiton)">
+    <group if="$(arg viz)">
         <include file="$(find zed_rtabmap_example)/launch/include/rtabmap_viz.launch.xml">
             <arg name="rgb_topic"         default="$(arg rgb_topic)"/>
             <arg name="depth_topic"       default="$(arg depth_topic)"/>

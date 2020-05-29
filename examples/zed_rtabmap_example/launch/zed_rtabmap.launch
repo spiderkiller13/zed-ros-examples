@@ -19,11 +19,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <launch>
     <arg name="viz"                   default="false"/>
-    <arg name="use_hokuyo"                      default="false"/>
+    <arg name="use_hokuyo"                      default="true"/>
     <arg name="use_velodyne"                      default="false"/>
     <arg name="bag_file"                      default="false"/>
     <arg name="zed_namespace"		    	default="zed" />
-    <arg name="localization"                    default="true"/>
+    <arg name="localization"                    default="false"/>
     
     <arg name="file_name"                        default="multi_zed_two"/>
     <arg name="svo_file"                        default="$(find zed_rtabmap_example)/rosbag/$(arg file_name).svo" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->

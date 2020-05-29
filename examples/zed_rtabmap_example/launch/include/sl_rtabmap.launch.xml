@@ -59,12 +59,12 @@
         <!-- Ken yu added for ZED fuse with 2d lidar-->
         <param name="subscribe_scan" value="true" if="$(arg use_hokuyo)"/>
         <param name="subscribe_scan_cloud" value="true" if="$(arg use_velodyne)"/>
-        <!--remap from="scan"              to="scan"/-->
+        <remap from="scan"              to="scan_merged"/>
     </node>
 
     <!-- Ken yu invoke 2d lidar and static tf-->
     <group if="$(arg use_hokuyo)">
-        <include file="$(find zed_rtabmap_example)/launch/include/2d_laser.launch.xml"/>
+        <include file="$(find zed_rtabmap_example)/launch/include/multi_laser.launch.xml"/>
     </group>
 </launch>
 

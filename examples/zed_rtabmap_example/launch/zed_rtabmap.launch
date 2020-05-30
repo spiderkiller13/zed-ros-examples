@@ -23,7 +23,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="use_velodyne"                      default="false"/>
     <arg name="bag_file"                      default="false"/>
     <arg name="zed_namespace"		    	default="zed" />
-    <arg name="localization"                    default="false"/>
+    <arg name="localization"                    default="true"/>
     
     <arg name="file_name"                        default="multi_zed_two"/>
     <arg name="svo_file"                        default="$(find zed_rtabmap_example)/rosbag/$(arg file_name).svo" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->
@@ -37,7 +37,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="camera_name"           default="zed" />
     <arg name="base_frame"            default="base_link" />
     <!-- Position respect to base frame (i.e. "base_link) -->
-    <arg name="cam_pos_x"             default="0.0" />
+    <arg name="cam_pos_x"             default="0.205" />
     <arg name="cam_pos_y"             default="0.0" />
     <arg name="cam_pos_z"             default="0.0" />
 
@@ -83,7 +83,17 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 <arg name="svo_file"            value="" />
                 <arg name="node_name"           value="$(arg zed_node_name)" />
                 <arg name="camera_model"        value="$(arg camera_model)" />
-                <arg name="publish_urdf"        value="$(arg publish_urdf)" />
+		<arg name="publish_urdf"        value="$(arg publish_urdf)" />
+                <!-- Position respect to base frame (i.e. "base_link) -->
+                <arg name="cam_pos_x"           value="$(arg cam_pos_x)" />
+                <arg name="cam_pos_y"           value="$(arg cam_pos_y)" />
+                <arg name="cam_pos_z"           value="$(arg cam_pos_z)" />
+
+                <!-- Orientation respect to base frame (i.e. "base_link) -->
+                <arg name="cam_roll"            value="$(arg cam_roll)" />
+                <arg name="cam_pitch"           value="$(arg cam_pitch)" />
+                <arg name="cam_yaw"             value="$(arg cam_yaw)" />
+
                 <!--Localization need no map->odom from zed itself -->
                 <arg if="$(arg localization)" name="publish_map_tf" value="false"/> 
             </include>

@@ -9,8 +9,8 @@ subscribe_scan_cloud:   false
 subscribe_user_data:    false
 subscribe_odom_info:    false
 
-database_path:      "~/.ros/rtabmap.db"
-config_path:        "~/.ros/rtabmap.cfg"
+database_path:      "~/.ros/213_0530.db"
+config_path:        "~/.ros/213_0530.cfg"
 
 frame_id:       "base_link"
 map_frame_id:   "map"

@@ -22,8 +22,8 @@
     <param name="angle_min" value="-2.094395"/>
     <param name="angle_max" value="2.094395"/>
   </node>
-    <node pkg="tf" type="static_transform_publisher" name="base_link2laser_front" args="0.201 -0.178 0 0 0 0 1 base_link laser_front 10" />
-    <node pkg="tf" type="static_transform_publisher" name="base_link2laser_rear"  args="-0.2 0.175 0 0 0 1 0 base_link laser_rear 10" />
+    <node pkg="tf" type="static_transform_publisher" name="base_link2laser_front" args="0.16 0.16 0 0 0 0.25881905 0.96592583 base_link laser_front 10" />
+    <node pkg="tf" type="static_transform_publisher" name="base_link2laser_rear"  args="-0.16 -0.16 0 0 0 -0.96592583 0.25881905 base_link laser_rear 10" />
 
 
 <!-- merge scans for amcl -->
@@ -37,7 +37,7 @@
         <param name="angle_max" value="3.141596"/>
         <param name="angle_increment" value="0.006283"/>
         <param name="scan_time" value="0.1"/>
-        <param name="range_min" value="0.2"/>
+        <param name="range_min" value="0.24"/>
         <param name="range_max" value="5.0"/>
     </node>    
 </launch>

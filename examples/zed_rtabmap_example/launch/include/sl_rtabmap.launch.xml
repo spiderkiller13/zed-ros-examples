@@ -4,6 +4,7 @@
     <arg name="viz"                   default="false"/>
     <arg name="use_hokuyo"                      default="false"/>
     <arg name="use_velodyne"                      default="false"/>
+    <arg name="robot_name"                      default="car1"/>
     
     <!-- Localization-only mode -->
     <arg name="localization"            default="false"/>
@@ -43,7 +44,9 @@
     <!-- RTABmap -->
     <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg args)" launch-prefix="">
         <rosparam command="load" file="$(find zed_rtabmap_example)/params/rtabmap.yaml" />
-        
+	<rosparam param="frame_id"      subst_value="True">$(arg robot_name)/base_link</rosparam>
+	<rosparam param="map_frame_id"  subst_value="True">$(arg robot_name)/map</rosparam>
+	<rosparam param="odom_frame_id" subst_value="True">$(arg robot_name)/odom</rosparam>
         <remap from="rgb/image"         to="$(arg rgb_topic)"/>
         <remap from="depth/image"       to="$(arg depth_topic)"/>
         <remap from="rgb/camera_info"   to="$(arg camera_info_topic)"/>
@@ -62,9 +65,5 @@
         <remap from="scan"              to="scan_merged"/>
     </node>
 
-    <!-- Ken yu invoke 2d lidar and static tf-->
-    <group if="$(arg use_hokuyo)">
-        <include file="$(find zed_rtabmap_example)/launch/include/multi_laser.launch.xml"/>
-    </group>
 </launch>
 

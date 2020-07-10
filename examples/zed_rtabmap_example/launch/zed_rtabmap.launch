@@ -22,8 +22,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="use_hokuyo"                      default="true"/>
     <arg name="use_velodyne"                      default="false"/>
     <arg name="bag_file"                      default="false"/>
-    <arg name="zed_namespace"		    	default="zed" />
     <arg name="localization"                    default="true"/>
+    <arg name="robot_name"                    default="car1"/>
     
     <arg name="file_name"                        default="multi_zed_two"/>
     <arg name="svo_file"                        default="$(find zed_rtabmap_example)/rosbag/$(arg file_name).svo" /> <!-- <arg name="svo_file" default="path/to/svo/file.svo"> -->
@@ -35,7 +35,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <!--For zed description -->
     <!-- Base frame -->
     <arg name="camera_name"           default="zed" />
-    <arg name="base_frame"            default="base_link" />
+    <arg name="base_frame"            default="/$(arg robot_name)/base_link" />
     <!-- Position respect to base frame (i.e. "base_link) -->
     <arg name="cam_pos_x"             default="0.205" />
     <arg name="cam_pos_y"             default="0.0" />
@@ -45,9 +45,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     <arg name="cam_roll"              default="0.0" />
     <arg name="cam_pitch"             default="0.0" />
     <arg name="cam_yaw"               default="0.0" />
-
+    
+    <!--param name="tf_prefix" value="car1" /-->
     <include file="$(find apriltag_ros)/launch/continuous_detection.launch"/> 
-    <group ns="$(arg zed_namespace)">
+    <group ns="$(arg robot_name)">
         <!-- ZED Wrapper Node-->
         <!--group if="$(arg bag_file)">
             <param name="zed_description"
@@ -73,13 +74,16 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                 <arg name="svo_file"            value="$(arg svo_file)" />
                 <arg name="node_name"           value="$(arg zed_node_name)" />
                 <arg name="camera_model"        value="$(arg camera_model)" />
-                <arg name="publish_urdf"        value="$(arg publish_urdf)" />
+		<arg name="publish_urdf"        value="$(arg publish_urdf)" />
+		<arg name="robot_name"        value="$(arg robot_name)" />
+
             </include>
             <!--Play 3D lidar rosbag -->
             <!--include file="$(find zed_rtabmap_example)/launch/rosbag_play.launch"/-->
         </group>
         <group unless="$(arg bag_file)">
             <include file="$(find zed_wrapper)/launch/$(arg camera_model).launch">
+		<arg name="robot_name"        value="$(arg robot_name)" />
                 <arg name="svo_file"            value="" />
                 <arg name="node_name"           value="$(arg zed_node_name)" />
                 <arg name="camera_model"        value="$(arg camera_model)" />
@@ -110,6 +114,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <arg name="viz" default="$(arg viz)" />
             <arg name="use_hokuyo" default="$(arg use_hokuyo)" />
             <arg name="use_velodyne" default="$(arg use_velodyne)"/>
+	    <arg name="robot_name" value="$(arg robot_name)"/>
         </include>
+        <!-- Ken yu invoke 2d lidar and static tf-->
+        <group if="$(arg use_hokuyo)">
+	    <include file="$(find zed_rtabmap_example)/launch/include/multi_laser.launch.xml">
+	        <arg name="robot_name" value="$(arg robot_name)"/>
+	    </include>		
+        </group>
     </group>
 </launch>

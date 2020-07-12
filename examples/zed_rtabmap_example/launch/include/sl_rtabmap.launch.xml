@@ -51,7 +51,7 @@
         <remap from="depth/image"       to="$(arg depth_topic)"/>
         <remap from="rgb/camera_info"   to="$(arg camera_info_topic)"/>
 
-        <remap from="grid_map"          to="map" />
+	<remap from="grid_map"          to="zed2/map" />
         <remap from="odom"              to="$(arg odom_topic)"/>
 
         <!-- localization mode -->

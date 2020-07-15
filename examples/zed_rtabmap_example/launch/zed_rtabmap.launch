@@ -19,7 +19,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 <launch>
     <arg name="viz"                   default="false"/>
-    <arg name="use_hokuyo"                      default="true"/>
+    <arg name="use_hokuyo"                      default="false"/>
     <arg name="use_velodyne"                      default="false"/>
     <arg name="bag_file"                      default="false"/>
     <arg name="localization"                    default="true"/>

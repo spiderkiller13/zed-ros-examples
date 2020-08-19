@@ -48,9 +48,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     <!--param name="tf_prefix" value="car1" /-->
     <group ns="$(arg robot_name)">
-	<include file="$(find apriltag_ros)/launch/continuous_detection.launch">
+	<!--include file="$(find apriltag_ros)/launch/continuous_detection.launch">
             <arg name="robot_name"        value="$(arg robot_name)" />
-        </include>
+        </include-->
         <!-- ZED Wrapper Node-->
         <!--group if="$(arg bag_file)">
             <param name="zed_description"
@@ -70,6 +70,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             </node>
             <include file="$(find zed_rtabmap_example)/launch/rosbag_play.launch"/>
         </group-->
+	<node pkg="ros_mqtt_bridge" name="mqtt_nano" type="nano.py" >
+            <param name="robot_name" value="$(arg robot_name)"/>
+        </node>
         <group if="$(arg bag_file)">
             <!--include file="$(find zed_wrapper)/launch/zed_camera.launch"-->
             <include file="$(find zed_wrapper)/launch/include/zed_camera.launch.xml">
